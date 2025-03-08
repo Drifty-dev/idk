@@ -13,6 +13,9 @@
         <button type="submit">Registrar IP</button>
     </form>
     <p id="status-message"></p>
+    <h2>IPs Registradas</h2>
+    <ul id="ip-list"></ul>
+    
     <script>
         // Función para registrar la IP
         async function registerIP(ip) {
@@ -23,6 +26,7 @@
                     connectedIPs.push(ip);
                     localStorage.setItem('connectedIPs', JSON.stringify(connectedIPs));
                     document.getElementById('status-message').textContent = `IP registrada: ${ip}`;
+                    fetchIPs(); // Actualizar la lista de IPs
                 } else {
                     document.getElementById('status-message').textContent = 'Esta IP ya está registrada.';
                 }
@@ -32,12 +36,30 @@
             }
         }
 
+        // Función para mostrar las IPs registradas
+        function fetchIPs() {
+            const ipList = document.getElementById('ip-list');
+            ipList.innerHTML = '';
+
+            // Obtener las IPs de localStorage
+            const connectedIPs = JSON.parse(localStorage.getItem('connectedIPs')) || [];
+
+            connectedIPs.forEach(ip => {
+                const li = document.createElement('li');
+                li.textContent = ip;
+                ipList.appendChild(li);
+            });
+        }
+
         // Manejar el envío del formulario
         document.getElementById('ip-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar el envío del formulario
             const ip = document.getElementById('ip-input').value;
             registerIP(ip);
         });
+
+        // Cargar las IPs al iniciar la página
+        fetchIPs();
     </script>
 </body>
 </html>
