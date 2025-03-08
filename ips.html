@@ -17,13 +17,14 @@
         // Función para registrar la IP
         async function registerIP(ip) {
             try {
-                const response = await fetch(`https://idkelolelol.netlify.app/ips?ip=${ip}`, {
-                    method: 'GET'
-                });
-                if (response.ok) {
+                // Almacenar la IP en localStorage
+                let connectedIPs = JSON.parse(localStorage.getItem('connectedIPs')) || [];
+                if (!connectedIPs.includes(ip)) {
+                    connectedIPs.push(ip);
+                    localStorage.setItem('connectedIPs', JSON.stringify(connectedIPs));
                     document.getElementById('status-message').textContent = `IP registrada: ${ip}`;
                 } else {
-                    document.getElementById('status-message').textContent = 'Error al registrar la IP.';
+                    document.getElementById('status-message').textContent = 'Esta IP ya está registrada.';
                 }
             } catch (error) {
                 console.error('Error:', error);
