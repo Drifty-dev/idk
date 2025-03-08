@@ -1,5 +1,5 @@
 async function fetchIPs() {
-    const response = await fetch('/ips');
+    const response = await fetch('/ips.html');
     const ips = await response.json();
     const ipList = document.getElementById('ip-list');
     ipList.innerHTML = '';
